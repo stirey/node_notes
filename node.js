@@ -11,8 +11,9 @@ let initialMemory = process.memoryUsage().heapUsed;
 let word = process.argv[2];
 
 
-///////////////////////////////////////////////////////////
+////////////////////////////////
 // Accessing a Process Object //
+////////////////////////////////
 
 let initialMemory = process.memoryUsage().heapUsed;
 // When a user initiates the program with an additional cmd line argument, word will be assigned that value. In the terminal, run node node.js blue and it would result in word being assigned 'blue'
@@ -75,3 +76,44 @@ myInterface.on('line', (fileLine) => {
     // fileLine is the line just read 
     console.log(`The line read: ${fileLine}`);
 });
+
+//////////////////////
+// WRITABLE STREAMS //
+//////////////////////
+// create a writable stream to a file using fs.createWriteStream() method
+// example below
+
+const fs = require('fs')
+// set the output to output.txt
+const fileStream = fs.createWriteStream('output.txt');
+// unlike a readable stream which ends when it has no more data to read, a writable stream could remain open indefinitely. We can indicate the end of a writable stream with the .end() method
+fileStream.write('This is the first line!');
+fileStream.write('This is the second line!');
+fileStream.end();
+
+//////////////////////////////
+//  Create an HTTP Server   //
+//////////////////////////////
+// https://nodejs.org/api/http.html
+// the http.createServer() method returns an instance of an http.server.
+// an http.server has a method .listen() which causes the server to listen for incoming connections.
+//When we run http.createServer() we pass in a custom callback function(requestListener). 
+//The callback function will be triggered once the serve is listening and receives a request.
+// EXAMPLE //
+
+// require the http core module
+const http = require('http');
+
+// invoked http.createServer() method with the requestListener callback. Similar to running the .on() of an EventEmitter. The requestListener will execute whenever an http request is sent to the server on the correct port
+let requestListener = (request, response) => {
+    // the header communicates that the file type is text, rather than something like audio or compressed data.
+    response.writeHead(22, {'Content-Type': 'text/plain'});
+    response.write('Hello World!/n');
+    response.end();
+};
+// server variable is assigned to the return value of the http.createServer() method
+const server = http.createServer(requestListener);
+// starts the server at port 3000. Every server on a given machine specifies a unique port so that traffice can be correctly routed.
+server.listen(3000);
+
+
