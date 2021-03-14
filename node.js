@@ -52,3 +52,26 @@ let readDataCallback = (err, data) => {
 // a string specifying the files character encoding, utf-8 for text files
 // callback function to be invoked when the asychronous task of reading from the file system is complete.Node will pass the contents of file.txt into the provided callback as its second argument
     fs.readFile('./file.txt', 'utf-8', readDataCallback)
+
+
+//////////////////////////
+//  READABLE STREAMS    //
+//////////////////////////
+// a stream is when data is read piece by piece, sequentially. this is preferable be it uses less RAM to process all of the data
+// .createInterface() method reads files line by line and its from the readline core module
+// .createInterface() returns an EventEmitter set up to emit 'line' events
+
+// require in the readline and fs core modules
+const readline = require('readline');
+const fs = require('fs');
+
+// we assign to myInterface the returned value from invoking readline.createInterface() with an object containing our designated input
+const myInterface = readline.createInterface({
+    // set our input to fs.createReadStream which will create a stream from the text.txt file
+    input: fs.createReadStream('text.txt')
+});
+// assign a listener callback to execute when line events are emitted. A 'line' event will be emitted after each line from the file is read
+myInterface.on('line', (fileLine) => {
+    // fileLine is the line just read 
+    console.log(`The line read: ${fileLine}`);
+});
